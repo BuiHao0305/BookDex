@@ -49,3 +49,9 @@ cd backend
 ```sh
 npm run backend
 ```
+
+## 2. Yêu Cầu
+
+phải có
+`nodejs` và `mongodb`
+`mongodb` đang được active
