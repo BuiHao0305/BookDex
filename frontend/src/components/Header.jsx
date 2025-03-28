@@ -5,19 +5,29 @@ import { useFetchDemographicDetailsQuery } from "../redux/api/demographicsApiSli
 import { Link } from "react-router-dom";
 import HeartIcon from "../pages/Books/components/HeartIcon";
 import moment from "moment";
+
 const Header = () => {
   const { data: newBooks, isLoading } = useGetNewBooksQuery();
-
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [authorName, setAuthorName] = useState([]);
-  const [demographicName, setDemographicName] = useState([]);
+  const [authorName, setAuthorName] = useState("");
+  const [demographicName, setDemographicName] = useState("");
 
-  const { data: authorData } = useFetchAuthorDetailsQuery(
-    newBooks && newBooks[currentIndex].author
-  );
+  // Kiểm tra newBooks trước khi truy cập index để tránh lỗi undefined
+  const currentBook = newBooks?.[currentIndex] || null;
+
+  // Kiểm tra ID trước khi gọi API
+  const authorId = currentBook?.author;
+  const demographicId = currentBook?.demographic;
+
+  const { data: authorData } = useFetchAuthorDetailsQuery(authorId, {
+    skip: !authorId,
+  });
+
   const { data: demographicData } = useFetchDemographicDetailsQuery(
-    newBooks && newBooks[currentIndex]?.demographic
+    demographicId,
+    { skip: !demographicId }
   );
+
   useEffect(() => {
     if (authorData) {
       setAuthorName(authorData.name);
@@ -42,6 +52,9 @@ const Header = () => {
     );
   };
 
+  if (isLoading || !newBooks || newBooks.length === 0) {
+    return <div className="text-white">Loading...</div>;
+  }
   return (
     <header className="bg-gray-700 py-4">
       <div className="max-w-7xl mx-auto px-4 flex flex-col ">

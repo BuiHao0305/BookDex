@@ -14,6 +14,11 @@ const createUser = asyncHandler(async (req, res) => {
   if (userExists) {
     return res.status(400).send("Người dùng đã tồn tại!");
   }
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!isValidEmail) {
+    res.status(400);
+    throw new Error("Email không hợp lệ!");
+  }
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -30,8 +35,8 @@ const createUser = asyncHandler(async (req, res) => {
       isAdmin: newUser.isAdmin,
     });
   } catch (error) {
-    res.status(400);
-    throw new Error("Dữ liệu không chính xác!");
+    console.error("Lỗi khi lưu user:", error.message); // Log lỗi ra console backend
+    res.status(400).json({ message: error.message }); // Trả về lỗi chính xác cho client
   }
 });
 
