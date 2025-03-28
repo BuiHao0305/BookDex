@@ -99,7 +99,8 @@ const Order = () => {
             <h2 className="text-2xl font-bold mb-4">Vận Chuyển</h2>
             <div className="bg-gray-100 p-4 rounded-md">
               <p>
-                <span className="font-bold">Tên:</span> {order.user.username}
+                <span className="font-bold">Tên:</span>{" "}
+                {order.user ? order.user.username : "Không có dữ liệu"}
               </p>
               <p>
                 <span className="font-bold">Email:</span>{" "}
@@ -128,7 +129,9 @@ const Order = () => {
                 {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                <Message variant="success">Đã thanh toán vào {order.paidAt}</Message>
+                <Message variant="success">
+                  Đã thanh toán vào {order.paidAt}
+                </Message>
               ) : (
                 <Message variant="danger">Chưa thanh toán</Message>
               )}
@@ -154,7 +157,7 @@ const Order = () => {
                       </p>
                     </Link>
                     <p>
-                      {item.qty} x {item.price}đ = 
+                      {item.qty} x {item.price}đ =
                       {(item.qty * item.price).toFixed(2)}đ
                     </p>
                   </div>
