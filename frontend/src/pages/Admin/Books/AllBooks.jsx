@@ -31,7 +31,7 @@ const AllBooks = () => {
                 key={book._id}
                 className="bg-white rounded-lg shadow-md overflow-hidden"
               >
-                <Link to={`/book/${book._id}`}>
+                <Link to={`/books/${book._id}`}>
                   <img
                     src={book.cover}
                     alt={book.name}
